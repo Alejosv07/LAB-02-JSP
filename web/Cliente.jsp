@@ -35,7 +35,7 @@
                         ArrayList<Cuenta> alCuenta = (ArrayList<Cuenta>) session.getAttribute("listaCuentaOriginal");
                         
                         if (alCuenta == null || alCuenta.size()==0 || user == null) {
-                            response.sendRedirect("index.jsp");
+                            response.sendRedirect("index2.jsp");
                         }else{
                             for (Cuenta c : alCuenta) {
                                 if (c.getUser().getCorreo().equalsIgnoreCase(user.getCorreo())) {
@@ -69,12 +69,24 @@
                         <input placeholder="Ingresa los años a calcular" name="anosCalcular" class="inputText" required="true" style="width: 100%; margin-bottom: 0.2em">
                         <button type="submit" class="boton boton--verde">Calcular</button>
                     </form>
-                    <label>Interes: <% 
-                        Cuenta c = (Cuenta) session.getAttribute("cuenta");
-                        out.print(c.getTipoDeInteres().getTasaInteres());
+                    <label>Interes: <%
+                        Cuenta c = new Cuenta();
+                        try{
+                            c = (Cuenta) session.getAttribute("cuenta");
+                            if (c==null || session.getAttribute("cuenta") == null) {
+                                response.sendRedirect("index2.jsp");
+                            }
+                            out.print(c.getTipoDeInteres().getTasaInteres());
+                        }catch(Exception ex){
+
+                        }
                     %></label>
                     <label>Capital: <%
-                        out.print(c.getSaldo());
+                        try
+                        {
+                            out.print(c.getSaldo());
+                        }catch(Exception ex){
+                        }
                         %></label>
                     <label>Tiempo: <%
                         int anos = 0;
@@ -103,10 +115,19 @@
                 <section class="sectionCuenta">
                     <h5 class="sectionCuenta__title">Consulta de saldos</h5>
                     <label>Nombre: <%
+                        try{
                             out.print(c.estadoCuenta().getNombre()); 
+                        }catch(Exception ex){
+                        }
                     %></label>
-                    <label>N.Cuenta: <% out.print(c.estadoCuenta().getnCuenta()); %></label>
-                    <label>Saldo: <% out.print(c.estadoCuenta().getSaldo()); %></label>
+                    <label>N.Cuenta: <% try{
+                            out.print(c.estadoCuenta().getnCuenta());
+                        }catch(Exception ex){
+                        } %></label>
+                    <label>Saldo: <%try{
+                            out.print(c.estadoCuenta().getSaldo());    
+                        }catch(Exception ex){
+                            }%></label>
                 </section>
             </div>
             </section>
@@ -128,26 +149,28 @@
                 <div class="cards">
                     <%
                         ArrayList<Transaccion> alTransaccion = (ArrayList<Transaccion>)session.getAttribute("listaTransacciones");
-                        MostarTransaciones mt = c.depositos(alTransaccion);
-                        out.print("<div class=\"card\">"
-//                                                + "<label>"+mt.getnCuenta()+"</label>"
-                                                 +"<label>"+mt.getNombre()+"</label>"
-                                                 +"<label>Anterior: $"+mt.getSaldoAnterior()+"</label>"
-                                                 +"<label>Actual: $"+mt.getNuevoSaldo()+"</label>"
-                                            + "</div>");
-//                        if (alTransaccion != null) {
-//                            for (Transaccion t : alTransaccion) {
-//                                if (t.getCuenta().getCuenta().trim().equalsIgnoreCase(c.getCuenta().trim())) {
-//                                    out.print("<div class=\"card\">"
-//                                                + "<label>Tipo de Transacción: "+t.getTipoTransaccion()+"</label>"
-//                                                 +"<label>Monto: "+t.getMonto()+"</label>"
-//                                                 +"<label>Observaciones: "+t.getObservacion()+"</label>"
-//                                                 +"<label>Fecha: "+t.getFecha().toString()+"</label>"
-//                                                 +"<label>Hora: "+t.getHora().toString()+"</label>"
+//                        MostarTransaciones mt = c.depositos(alTransaccion);
+//                        out.print("<div class=\"card\">"
+//                                                 +"<label>"+mt.getNombre()+"</label>"
+//                                                 +"<label>Anterior: $"+mt.getSaldoAnterior()+"</label>"
+//                                                 +"<label>Actual: $"+mt.getNuevoSaldo()+"</label>"
 //                                            + "</div>");
-//                                }
-//                            }
-//                        }
+                        if (alTransaccion != null) {
+                            int i = 1;
+                            for (Transaccion t : alTransaccion) {
+                                if (t.getCuenta().getCuenta().trim().equalsIgnoreCase(c.getCuenta().trim())) {
+                                    out.print("<div class=\"card\">"
+                                                + "<label>"+i+"</label>"
+                                                + "<label>Tipo de Transacción: "+t.getTipoTransaccion()+"</label>"
+                                                 +"<label>Monto: "+t.getMonto()+"</label>"
+                                                 +"<label>Observaciones: "+t.getObservacion()+"</label>"
+                                                 +"<label>Fecha: "+t.getFecha().toString()+"</label>"
+                                                 +"<label>Hora: "+t.getHora().toString()+"</label>"
+                                            + "</div>");
+                                    i++;
+                                }
+                            }
+                        }
                     %>
                 </div>
             </section>

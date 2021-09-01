@@ -84,22 +84,29 @@ public class CEjercici02 extends HttpServlet {
         //Creamo una lista de cuentas
         ArrayList<Cuenta> alCuenta = new ArrayList<>();
         
+        User user2 = (User) session.getAttribute("usuario");
         //Obtenemos una lista de cuentas
         alCuenta = (ArrayList<Cuenta>) session.getAttribute("listaCuentaOriginal");
         if (user.getCorreo().equalsIgnoreCase("root") && user.getContra().equals("root")) {
             session.setAttribute("usuario", user);
             response.sendRedirect("Admi.jsp");
-        }else
-        if (alCuenta != null && alCuenta.size()>0) {
+        }else if(user2!=null){
+            response.sendRedirect("index2.jsp");
+            }else if (alCuenta != null && alCuenta.size()>0) {
+                boolean bandera = true;
             for (Cuenta cuenta : alCuenta) {
                 if (user.getCorreo().equalsIgnoreCase(cuenta.getUser().getCorreo().trim())
                         && user.getContra().equals(cuenta.getUser().getContra().trim())) {
                     session.setAttribute("usuario", user);
                     response.sendRedirect("Cliente.jsp");
+                    bandera=false;
                 }
             }
+            if (bandera==true) {
+                response.sendRedirect("index2.jsp");
+            }
         }else{
-            response.sendRedirect("index.jsp");
+            response.sendRedirect("index2.jsp");
         }
     }
 

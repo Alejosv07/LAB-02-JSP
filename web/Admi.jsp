@@ -72,7 +72,7 @@
                             <option value="Interes simple">Interés simple</option>
                         </select>
                     </section>
-                    <input type="number" name="txtInteres" placeholder="Interes(% mensual)" required class="inputText" min=0.01 step="0.01">
+                    <input type="number" name="txtInteres" placeholder="Interes(% anual)" required class="inputText" min=0.01 step="0.01">
                 </section>
                 <input type="submit" value="Crear cuenta" class="boton boton--verde">
             </form>
@@ -119,7 +119,7 @@
                     User user = (User)session.getAttribute("usuario");
                     if (user == null || !user.getCorreo().equalsIgnoreCase("root")
                             || !user.getContra().equalsIgnoreCase("root")) {
-                        response.sendRedirect("index.jsp");
+                        response.sendRedirect("index2.jsp");
                     }
                 %> 
                 

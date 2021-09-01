@@ -1,27 +1,74 @@
-<%@page import="java.util.regex.Pattern"%>
-<%@page import="java.util.ArrayList"%>
-<%@page import="Clases.numeroAleatorio"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
-        <title>JSP Page</title>
-    </head>
-    <body>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav">
-                <button class="btn btn-dark" type="menu"><a class="nav-link" aria-current="page" href="index.jsp">Problema 1</a></button>
-                <button class="btn btn-dark" type="menu"><a class="nav-link" aria-current="page" href="index2.jsp">Problema 2</a></button>
-            </div>
-          </div>
-        </div>
-      </nav>
-      <br><br>
-        <%
+package org.apache.jsp;
+
+import javax.servlet.*;
+import javax.servlet.http.*;
+import javax.servlet.jsp.*;
+import java.util.regex.Pattern;
+import java.util.ArrayList;
+import Clases.numeroAleatorio;
+
+public final class problema1_jsp extends org.apache.jasper.runtime.HttpJspBase
+    implements org.apache.jasper.runtime.JspSourceDependent {
+
+  private static final JspFactory _jspxFactory = JspFactory.getDefaultFactory();
+
+  private static java.util.List<String> _jspx_dependants;
+
+  private org.glassfish.jsp.api.ResourceInjector _jspx_resourceInjector;
+
+  public java.util.List<String> getDependants() {
+    return _jspx_dependants;
+  }
+
+  public void _jspService(HttpServletRequest request, HttpServletResponse response)
+        throws java.io.IOException, ServletException {
+
+    PageContext pageContext = null;
+    HttpSession session = null;
+    ServletContext application = null;
+    ServletConfig config = null;
+    JspWriter out = null;
+    Object page = this;
+    JspWriter _jspx_out = null;
+    PageContext _jspx_page_context = null;
+
+    try {
+      response.setContentType("text/html;charset=UTF-8");
+      pageContext = _jspxFactory.getPageContext(this, request, response,
+      			null, true, 8192, true);
+      _jspx_page_context = pageContext;
+      application = pageContext.getServletContext();
+      config = pageContext.getServletConfig();
+      session = pageContext.getSession();
+      out = pageContext.getOut();
+      _jspx_out = out;
+      _jspx_resourceInjector = (org.glassfish.jsp.api.ResourceInjector) application.getAttribute("com.sun.appserv.jsp.resource.injector");
+
+      out.write("\n");
+      out.write("\n");
+      out.write("\n");
+      out.write("\n");
+      out.write("<!DOCTYPE html>\n");
+      out.write("<html>\n");
+      out.write("    <head>\n");
+      out.write("        <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n");
+      out.write("        <link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css\" rel=\"stylesheet\" integrity=\"sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We\" crossorigin=\"anonymous\">\n");
+      out.write("        <title>JSP Page</title>\n");
+      out.write("    </head>\n");
+      out.write("    <body>\n");
+      out.write("            <nav class=\"navbar navbar-expand-lg navbar-dark bg-dark\">\n");
+      out.write("        <div class=\"container\">\n");
+      out.write("          <div class=\"collapse navbar-collapse\" id=\"navbarNavAltMarkup\">\n");
+      out.write("            <div class=\"navbar-nav\">\n");
+      out.write("              <button class=\"btn btn-dark\" type=\"menu\"><a class=\"nav-link active\" aria-current=\"page\">Problema 1</a></button>\n");
+      out.write("              <button class=\"btn btn-dark\" type=\"menu\"><a class=\"nav-link active\" aria-current=\"page\">Problema 2</a></button>\n");
+      out.write("            </div>\n");
+      out.write("          </div>\n");
+      out.write("        </div>\n");
+      out.write("      </nav>\n");
+      out.write("      <br><br>\n");
+      out.write("        ");
+
             numeroAleatorio numero;
             if (session.getAttribute("numero") == null) {
                 numero = new numeroAleatorio(new ArrayList<Integer>());
@@ -31,30 +78,36 @@
                 numero = (numeroAleatorio) session.getAttribute("numero");
                 //out.print(numero.getSecreto());
             }
-        %>
-        <div class="container">
-            <div class="col-6 offset-3">
-                <form style="margin: 5%;" action="#" method="GET">
-                    <div class="mb-3">
-                        <label for="idNumero" class="form-label">Ingrese un numero entre <% out.print(numero.numeroMenor); %> y <% out.print(numero.numeroMayor); %></label>
-                        <input type="number" class="form-control" id="idNumero" name="numero" min="0" max="1000">
-                        <div id="idNumeroAyuda" class="form-text">En cada nuevo intento obtendra pistas de su proximidad</div>
-                    </div>
-                    <center>
-                        <div class="row">
-                            <div class="col">
-                                <input type="submit" name="reiniciar" value="Reiniciar" class="btn btn-dark" style="width: 56%;">
-                            </div>
-                            <div class="col">
-                                <input type="submit" name="submit" value="Ingresar" class="btn btn-dark" style="width: 100%;">
-                            </div>
-                            <div class="col">
-                                <input type="submit" name="rendirse" value="Rendirse" class="btn btn-dark" style="width: 56%;">
-                            </div>
-                        </div>
-                    </center>
-                </form>
-                <%
+        
+      out.write("\n");
+      out.write("        <div class=\"container\">\n");
+      out.write("            <div class=\"col-6 offset-3\">\n");
+      out.write("                <form style=\"margin: 5%;\" action=\"#\" method=\"GET\">\n");
+      out.write("                    <div class=\"mb-3\">\n");
+      out.write("                        <label for=\"idNumero\" class=\"form-label\">Ingrese un numero entre ");
+ out.print(numero.numeroMenor); 
+      out.write(" y ");
+ out.print(numero.numeroMayor); 
+      out.write("</label>\n");
+      out.write("                        <input type=\"number\" class=\"form-control\" id=\"idNumero\" name=\"numero\">\n");
+      out.write("                        <div id=\"idNumeroAyuda\" class=\"form-text\">En cada nuevo intento obtendra pistas de su proximidad</div>\n");
+      out.write("                    </div>\n");
+      out.write("                    <center>\n");
+      out.write("                        <div class=\"row\">\n");
+      out.write("                            <div class=\"col\">\n");
+      out.write("                                <input type=\"submit\" name=\"reiniciar\" value=\"Reiniciar\" class=\"btn btn-dark\" style=\"width: 40%;\">\n");
+      out.write("                            </div>\n");
+      out.write("                            <div class=\"col\">\n");
+      out.write("                                <input type=\"submit\" name=\"submit\" value=\"Ingresar\" class=\"btn btn-dark\" style=\"width: 100%;\">\n");
+      out.write("                            </div>\n");
+      out.write("                            <div class=\"col\">\n");
+      out.write("                                <input type=\"submit\" name=\"rendirse\" value=\"Rendirse\" class=\"btn btn-dark\" style=\"width: 40%;\">\n");
+      out.write("                            </div>\n");
+      out.write("                        </div>\n");
+      out.write("                    </center>\n");
+      out.write("                </form>\n");
+      out.write("                ");
+
                     if (request.getParameter("submit") != null && request.getParameter("submit") != "") {
                         if (request.getParameter("numero") != null && request.getParameter("numero") != ""
                                 && Integer.parseInt(request.getParameter("numero")) >= numero.numeroMenor && Integer.parseInt(request.getParameter("numero")) <= numero.numeroMayor) {
@@ -166,8 +219,22 @@
                         session.removeAttribute("numero");
                     }
 
-                %>
-            </div>
-        </div>
-    </body>
-</html>
+                
+      out.write("\n");
+      out.write("            </div>\n");
+      out.write("        </div>\n");
+      out.write("    </body>\n");
+      out.write("</html>\n");
+    } catch (Throwable t) {
+      if (!(t instanceof SkipPageException)){
+        out = _jspx_out;
+        if (out != null && out.getBufferSize() != 0)
+          out.clearBuffer();
+        if (_jspx_page_context != null) _jspx_page_context.handlePageException(t);
+        else throw new ServletException(t);
+      }
+    } finally {
+      _jspxFactory.releasePageContext(_jspx_page_context);
+    }
+  }
+}
