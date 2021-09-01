@@ -1,0 +1,272 @@
+    * {
+        box-sizing: border-box;
+        font-family: sans-serif;
+    }
+    
+    body {
+        height: 100vh;
+        background-color: #f1f1f1;
+    }
+    
+    .navBar {
+        width: 100%;
+        padding: 1.5em;
+        background-color: #0D4B8B;
+    }
+    
+    .ul {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        align-items: center;
+        padding: 0;
+        margin: 0;
+        list-style: none;
+    }
+    
+    .item,
+    .boton--salir {
+        color: white;
+    }
+    
+    .boton--salir {
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        background-color: transparent;
+    }
+    
+    .boton--salir:hover {
+        border-bottom: 1px solid white;
+    }
+    
+    .container {
+        display: grid;
+        grid-template-columns: 30% 70%;
+        /* grid-template-columns: repeat(auto-fit, minmax(300px, 1fr) minmax(690px, 1fr)); */
+        padding: 1em 0;
+    }
+    
+    .sectionNuevaCuenta {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border-right: 1px solid grey;
+    }
+    
+    .sectionUser,
+    .sectionCuenta {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        width: 100%;
+        margin-bottom: 0.5em;
+        padding: 0.5em;
+        border: 1px solid #0D4B8B;
+        border-radius: 8px;
+        background-color: white;
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+        -ms-border-radius: 8px;
+        -o-border-radius: 8px;
+    }
+    
+    .sectionUser:hover,
+    .sectionCuenta:hover {
+        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+    }
+    
+    .sectionCuenta__title,
+    .sectionUser__title,
+    .sectionTipoInteres__title {
+        color: #0D4B8B;
+        margin: 1em 0;
+    }
+    
+    .inputText {
+        padding: 0.3em 0;
+        border: 1px solid gray;
+        border-radius: 8px;
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+        -ms-border-radius: 8px;
+        -o-border-radius: 8px;
+    }
+    
+    .select {
+        padding: .2em;
+        margin-bottom: 0.4em;
+        border-radius: 8px;
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+        -ms-border-radius: 8px;
+        -o-border-radius: 8px;
+    }
+    
+    .select:checked {
+        background-color: green;
+    }
+    
+    .boton {
+        padding: 0.5em;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+        -ms-border-radius: 8px;
+        -o-border-radius: 8px;
+    }
+    
+    .boton:active {
+        transform: scale(0.9);
+        -webkit-transform: scale(0.9);
+        -moz-transform: scale(0.9);
+        -ms-transform: scale(0.9);
+        -o-transform: scale(0.9);
+    }
+    
+    .boton--random {
+        padding: 0.2em;
+        border: 1px solid #0D4B8B;
+        background-color: white;
+        color: #0D4B8B;
+    }
+    
+    .boton--verde {
+        background-color: #198754;
+        color: white;
+        font-weight: bold;
+        display: block;
+        width: 100%;
+    }
+    /* seccion derecha */
+    
+    .seccionRegistrados {
+        padding: 1em;
+    }
+    
+    .buscador {
+        display: grid;
+        grid-template-columns: 1fr 40px;
+        align-items: center;
+        padding: .5em;
+        margin-bottom: 1em;
+        border: 1px solid #0D4B8B;
+        border-radius: 8px;
+        background-color: white;
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+        -ms-border-radius: 8px;
+        -o-border-radius: 8px;
+    }
+    
+    .buscador__txt {
+        border: none;
+    }
+    
+    .buscador__txt:focus {
+        outline: none;
+    }
+    
+    .buscador__boton {
+        background-color: transparent;
+        border: none;
+    }
+    
+    .fa-search {
+        cursor: pointer;
+        color: #0D4B8B;
+    }
+    
+    .cards {
+        padding: .5em;
+        height: 54vh;
+        overflow-y: auto;
+        background-color: #f1f1f1;
+    }
+    
+    .card {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        flex-wrap: wrap;
+        padding: 1em;
+        border: 1px solid #6C757D;
+        border-radius: 8px;
+        background-color: white;
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+        -ms-border-radius: 8px;
+        -o-border-radius: 8px;
+    }
+    
+    .buscador:hover,
+    .card:hover,
+    .card__transaccion:hover {
+        box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.5);
+    }
+    
+    .card {
+        margin-bottom: 0.2em;
+    }
+    
+    .card:hover {
+        border: 1px solid #0D4B8B;
+    }
+    
+    .card__transaccion:hover {
+        border: 1px solid #198754;
+    }
+    
+    .card__transaccion {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        flex-wrap: wrap;
+        padding: .5em;
+        border: 1px solid gray;
+        border-radius: 8px;
+        visibility: hidden;
+        background-color: white;
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+        -ms-border-radius: 8px;
+        -o-border-radius: 8px;
+    }
+        .card__transaccion2 {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        flex-wrap: wrap;
+        padding: .5em;
+        border: 1px solid gray;
+        border-radius: 8px;
+        background-color: white;
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+        -ms-border-radius: 8px;
+        -o-border-radius: 8px;
+    }
+    .boton--transaccion {
+        color: white;
+        background-color: #0D4B8B;
+    }
+    
+    .boton--abonar,
+    .boton--retirar {
+        color: white;
+        background-color: #198754;
+    }
+    
+    .boton--actualizar {
+        color: white;
+        background-color: #FFC107;
+    }
+    
+    .boton--cancelar,
+    .boton--eliminar {
+        color: white;
+        background-color: #DC3545;
+    }
