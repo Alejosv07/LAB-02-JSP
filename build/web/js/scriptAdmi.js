@@ -8,12 +8,8 @@ for (let index = 0; index < card__transaccion.length; index++) {
     botonTransaccion[index].addEventListener("click", (evt) => {
         evt.preventDefault();
         const card = document.getElementsByClassName("card");
-        let minimo = 0;
-        if (card[index].childNodes[4].textContent != 0) {
-            minimo = 0.01;
-        }
         //Agregamos html de forma dinamica
-        card__transaccion[index].innerHTML = `<input type="number" name="txtMonto" class="inputText" placeholder="Monto" step="0.01" required min="${minimo}" max="${card[index].childNodes[5].textContent}">
+        card__transaccion[index].innerHTML = `<input type="number" name="txtMonto" class="inputText" placeholder="Monto" step="0.01" required="true" min="0.01">
         <input type="text" class="inputText" name="txtObservacion" placeholder="Observación" required>
         <button type="submit" name="btnAbonar" class="boton boton--abonar">Abonar</button>
         <button type="submit" name="btnRetirar" class="boton boton--retirar">Retirar</button>

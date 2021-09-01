@@ -5,10 +5,7 @@
  */
 package Clases;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
 
 /**
  *
@@ -18,7 +15,6 @@ public class Cuenta {
     private User user;
     private String nombre;
     private String cuenta;
-//    private BigInteger cuenta;
     private double saldo;
     private TipoDeInteres tipoDeInteres;
     
@@ -49,69 +45,59 @@ public class Cuenta {
         this.cuenta = cuenta;
     }
 
-    public HashMap estadoCuenta() {
-        //Creamos el hashMap
-        HashMap hmEstadoCuenta = new HashMap();
+    public ConsultaSaldos estadoCuenta() {
+        ConsultaSaldos consultaSaldos = new ConsultaSaldos();
         
-        //Ingresamos Nombre del titular y número de identificación cuenta.
-        hmEstadoCuenta.put("Numero de cuenta", this.cuenta);
-        hmEstadoCuenta.put("Nombre del titular", this.nombre);
+        consultaSaldos.setNombre(this.nombre);
+        consultaSaldos.setSaldo(this.saldo);
+        consultaSaldos.setnCuenta(this.cuenta);
         
-        hmEstadoCuenta.put("Saldo actual", this.saldo);            
-
-        return hmEstadoCuenta;
+        return consultaSaldos;
     }
     
-    public HashMap depositos(ArrayList<Transaccion> alTransaccion) {
-        //Creamos el hashMap
-        HashMap hmEstadoCuenta = new HashMap();
-        
-        //Ingresamos Nombre del titular y número de identificación cuenta.
-        hmEstadoCuenta.put("Numero de cuenta", this.cuenta);
-        hmEstadoCuenta.put("Nombre del titular", this.nombre);
-        //Fecha del estado.
-        hmEstadoCuenta.put("Fecha", alTransaccion.get(alTransaccion.size()).getFecha());
-        hmEstadoCuenta.put("Hora", alTransaccion.get(alTransaccion.size()).getHora());
-        
-        hmEstadoCuenta.put("Transacción realizada", alTransaccion.get(alTransaccion.size()).getTipoTransaccion());
+    public MostarTransaciones depositos(ArrayList<Transaccion> alTransaccion) {
+        MostarTransaciones mostarTransaciones = new MostarTransaciones();
+        mostarTransaciones.setNombre(this.nombre);
+        mostarTransaciones.setNuevoSaldo(this.saldo);
+        mostarTransaciones.setnCuenta(this.cuenta);
         
         if (alTransaccion.size()==1) {
-            hmEstadoCuenta.put("Saldo anterior", 0);
-            hmEstadoCuenta.put("Saldo actual", alTransaccion.get(alTransaccion.size()).getMonto());
+            mostarTransaciones.setSaldoAnterior(0);
+        }
+        ArrayList<Transaccion> alTransaccion2 = new ArrayList<>();
+        if (alTransaccion.size()>1) {
+            for (Transaccion t : alTransaccion) {
+                if (t.getCuenta().cuenta.trim().equalsIgnoreCase(this.cuenta)) {
+                    alTransaccion2.add(t);
+                }
+            }
+            
+            mostarTransaciones.setSaldoAnterior(alTransaccion2.get(alTransaccion2.size()-1).getMonto());
         }
         
-        if (alTransaccion.size()>1) {
-            hmEstadoCuenta.put("Saldo anterior", alTransaccion.get(alTransaccion.size()-1).getMonto());            
-            hmEstadoCuenta.put("Saldo actual", alTransaccion.get(alTransaccion.size()).getMonto());            
-        }
-
-        return hmEstadoCuenta;
+        return mostarTransaciones;
     }
     
-    public HashMap retiros(ArrayList<Transaccion> alTransaccion) {
-        //Creamos el hashMap
-        HashMap hmEstadoCuenta = new HashMap();
-        
-        //Ingresamos Nombre del titular y número de identificación cuenta.
-        hmEstadoCuenta.put("Numero de cuenta", this.cuenta);
-        hmEstadoCuenta.put("Nombre del titular", this.nombre);
-        //Fecha del estado.
-        hmEstadoCuenta.put("Fecha", alTransaccion.get(alTransaccion.size()).getFecha());
-        hmEstadoCuenta.put("Hora", alTransaccion.get(alTransaccion.size()).getHora());
-        
-        hmEstadoCuenta.put("Transacción realizada", alTransaccion.get(alTransaccion.size()).getTipoTransaccion());
+    public MostarTransaciones retiros(ArrayList<Transaccion> alTransaccion) {
+        MostarTransaciones mostarTransaciones = new MostarTransaciones();
+        mostarTransaciones.setNombre(this.nombre);
+        mostarTransaciones.setNuevoSaldo(this.saldo);
         
         if (alTransaccion.size()==1) {
-            hmEstadoCuenta.put("Saldo anterior", 0);
-            hmEstadoCuenta.put("Saldo actual", alTransaccion.get(alTransaccion.size()).getMonto());
+            mostarTransaciones.setSaldoAnterior(0);
+        }
+        ArrayList<Transaccion> alTransaccion2 = new ArrayList<>();
+        if (alTransaccion.size()>1) {
+            for (Transaccion t : alTransaccion) {
+                if (t.getCuenta().cuenta.trim().equalsIgnoreCase(this.cuenta)) {
+                    alTransaccion2.add(t);
+                }
+            }
+            
+            mostarTransaciones.setSaldoAnterior(alTransaccion2.get(alTransaccion2.size()-1).getMonto());
         }
         
-        if (alTransaccion.size()>1) {
-            hmEstadoCuenta.put("Saldo anterior", alTransaccion.get(alTransaccion.size()-1).getMonto());            
-            hmEstadoCuenta.put("Saldo actual", alTransaccion.get(alTransaccion.size()).getMonto());            
-        }
-
-        return hmEstadoCuenta;
+        return mostarTransaciones;
     }
 
     public TipoDeInteres getTipoDeInteres() {

@@ -110,7 +110,10 @@ public class CCuenta extends HttpServlet {
             ArrayList<Cuenta>alCuentaInsertar = new ArrayList<>();
             String nCuenta = request.getParameter("nCuenta");
             for (Cuenta c : alCuenta) {
+                System.out.println("valor parametro "+nCuenta);
+                System.out.println("valor lista "+c.getCuenta());
                 if (!c.getCuenta().equalsIgnoreCase(nCuenta)) {
+                    System.out.println("Sabes para mi no son iguales");
                     alCuentaInsertar.add(c);
                 }
             }
@@ -132,7 +135,7 @@ public class CCuenta extends HttpServlet {
             session.setAttribute("listaCuentaOriginal", alCuentaInsertar);
             response.sendRedirect("Admi.jsp");
         }else if(btnSalir != null){
-            session.setAttribute("usuario", null);
+            session.removeAttribute("usuario");
             response.sendRedirect("index.jsp");
         }else{
             Cuenta cuenta = new Cuenta();

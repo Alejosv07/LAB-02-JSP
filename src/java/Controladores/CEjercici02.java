@@ -86,7 +86,11 @@ public class CEjercici02 extends HttpServlet {
         
         //Obtenemos una lista de cuentas
         alCuenta = (ArrayList<Cuenta>) session.getAttribute("listaCuentaOriginal");
-        if (alCuenta != null) {
+        if (user.getCorreo().equalsIgnoreCase("root") && user.getContra().equals("root")) {
+            session.setAttribute("usuario", user);
+            response.sendRedirect("Admi.jsp");
+        }else
+        if (alCuenta != null && alCuenta.size()>0) {
             for (Cuenta cuenta : alCuenta) {
                 if (user.getCorreo().equalsIgnoreCase(cuenta.getUser().getCorreo().trim())
                         && user.getContra().equals(cuenta.getUser().getContra().trim())) {
@@ -94,9 +98,6 @@ public class CEjercici02 extends HttpServlet {
                     response.sendRedirect("Cliente.jsp");
                 }
             }
-        }else if (user.getCorreo().equalsIgnoreCase("root") && user.getContra().equals("root")) {
-            session.setAttribute("usuario", user);
-            response.sendRedirect("Admi.jsp");
         }else{
             response.sendRedirect("index.jsp");
         }

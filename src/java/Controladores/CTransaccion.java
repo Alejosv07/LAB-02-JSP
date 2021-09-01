@@ -7,7 +7,6 @@ package Controladores;
 
 import Clases.Cuenta;
 import Clases.Transaccion;
-import Clases.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
@@ -97,7 +96,7 @@ public class CTransaccion extends HttpServlet {
         Transaccion transaccion = new Transaccion();
         double monto = Double.parseDouble(request.getParameter("txtMonto"));
         for (Cuenta c : alCuenta) {
-            if (c.getCuenta().equalsIgnoreCase(nCuenta) && c.getSaldo()> monto) {
+            if (c.getCuenta().equalsIgnoreCase(nCuenta)) {
                 transaccion.setCuenta(c);
                 transaccion.setFecha(LocalDate.now());
                 transaccion.setHora(LocalTime.now());
@@ -111,14 +110,18 @@ public class CTransaccion extends HttpServlet {
                     resultado = c.getSaldo()-monto;
                     transaccion.setTipoTransaccion("Retiro");
                 }
-                alTransaccion.add(transaccion);
-                alCuentaInsertar.add(new Cuenta(c.getNombre(), nCuenta, resultado, c.getTipoDeInteres(), c.getUser()));
-                session.setAttribute("listaTransacciones", alTransaccion);
-                session.setAttribute("listaCuenta", alCuentaInsertar);
-                session.setAttribute("listaCuentaOriginal", alCuentaInsertar);
+                if (resultado>0) {
+                    alTransaccion.add(transaccion);
+                    alCuentaInsertar.add(new Cuenta(c.getNombre(), nCuenta, resultado, c.getTipoDeInteres(), c.getUser()));
+                }else{
+                    alCuentaInsertar.add(c);
+                }
             }else{
                 alCuentaInsertar.add(c);
             }
+            session.setAttribute("listaTransacciones", alTransaccion);
+            session.setAttribute("listaCuenta", alCuentaInsertar);
+            session.setAttribute("listaCuentaOriginal", alCuentaInsertar);
         }
         if (btnRetirar != null || btnAbonar != null) {
             response.sendRedirect("Admi.jsp");

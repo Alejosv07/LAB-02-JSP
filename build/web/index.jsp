@@ -24,7 +24,7 @@
                 <img src="Assets/img/Banco-agricola-sv.png" alt="" class="containerLogo__logo">
                 <small class="containerLogo__logoFooter">El Salvador cuenta con nosotros</small>
             </div>
-            <form action="CEjercici02" method="post" class="formInicioSesion">
+            <form action="CEjercici02" method="POST" class="formInicioSesion">
                 <div class="formInicioSesion__campo">
                     <input type="text" name="txtUsuario" class="formInicioSesion__inputText" placeholder="Usuario">
                 </div>
