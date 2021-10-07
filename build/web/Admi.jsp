@@ -4,6 +4,7 @@
     Author     : Urban
 --%>
 
+<%@page import="Clases.Cuentabd"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="Clases.Cuenta"%>
 <%@page import="Clases.User"%>
@@ -47,21 +48,21 @@
                 <!-- seccion de datos de usuario -->
                 <section class="sectionUser">
                     <h5 class="sectionUser__title">Usuario</h5>
-                    <input type="email" name="txtCorreoN" placeholder="Correo Electronico" required class="inputText">
-                    <input type="text" name="txtContraN" placeholder="Contraseña" required class="inputText">
+                    <input type="email" name="txtCorreoN" placeholder="Correo Electronico" required class="inputText" value="basdl@gmail">
+                    <input type="text" name="txtContraN" placeholder="Contraseña" required class="inputText" value="123">
                 </section>
 
                 <!-- seccion de datos de cuenta -->
                 <section class="sectionCuenta">
                     <h5 class="sectionCuenta__title">Cuenta</h5>
-                    <input type="text" name="txtNombreN" placeholder="Nombre" required class="inputText">
+                    <input type="text" name="txtNombreN" placeholder="Nombre" required class="inputText" value="Alejs">
 
                     <!-- campo de seccion cuenta -->
                     <div class="sectionCuenta__campo">
                         <input type="number" name="txtNCuentaN" placeholder="Numero de cuenta" required class="inputText" min="1000000000000000" max="9999999999999999" step="1" id="txtNRandom">
                         <button class="boton boton--random" id="btnGenerarNcuenta" type="button"><i class="fas fa-random"></i></button>
                     </div>
-                    <input type="number" name="txtSaldo" placeholder="Saldo" required class="inputText" min=0.01 step="0.01">
+                    <input type="number" name="txtSaldo" placeholder="Saldo" required class="inputText" min=0.01 step="0.01" value="100">
 
                     <!-- Seccion de tipo de interes -->
                     <section class="sectionTipoInteres">
@@ -69,10 +70,10 @@
                             Tipo de interes
                         </h5>
                         <select name="optionInteres" id="" class="select">
-                            <option value="Interes simple">Interés simple</option>
+                            <option value="Interes simple" selected="true">Interés simple</option>
                         </select>
                     </section>
-                    <input type="number" name="txtInteres" placeholder="Interes(% anual)" required class="inputText" min=0.01 step="0.01">
+                    <input type="number" name="txtInteres" placeholder="Interes(% anual)" required class="inputText" min=0.01 step="0.01" value="10">
                 </section>
                 <input type="submit" value="Crear cuenta" class="boton boton--verde">
             </form>
@@ -95,14 +96,31 @@
                     //Creamos una lista de cuentas
                     ArrayList<Cuenta>alCuenta = new ArrayList<>();
 
+                    Cuentabd cbd = new Cuentabd();
                     //Obtenemos una lista de cuentas
-                    alCuenta = (ArrayList<Cuenta>) session.getAttribute("listaCuenta");
+                    alCuenta = cbd.listaCuenta("");
 
+                    
+                    //Session test
+                    int idUser = 0;
+                    int idTipoDeInteres = 0;
+                    int idCuenta = 0;
                     //Agregamos la cuenta a la lista
                     if (alCuenta != null) {
                         for (Cuenta c : alCuenta) {
+                            
+                            
+                            idUser = c.getUser().getIdUser();
+                            session.setAttribute("idUser", idUser);
+                            
+                            idTipoDeInteres = c.getTipoDeInteres().getIdTipoDeInteres();
+                            session.setAttribute("idTipoDeInteres", idTipoDeInteres);
+                            
+                            idCuenta = c.getIdCuenta();
+                            session.setAttribute("idCuenta", idCuenta);
+                            
                             out.print("<form action=\"CCuenta\" method=\"post\" class=\"card\">"
-                                        + "<input name =\"nCuenta\" class=\"nCuenta\" value=\""+c.getCuenta()+"\" readonly style=\"border: none; outline: none;\"></input>"
+                                        + "<input name =\"nCuenta\" class=\"nCuenta\" value=\""+c.getIdCuenta()+"\" readonly style=\"border: none; outline: none;\"></input>"
                                         + "<label class=\"nombreCuenta\">"+c.getNombre()+"</label>"
                                         + "<label class=\"nombreCuenta\" style=\"display: none;\">"+c.getUser().getContra()+"</label>"
                                         + "<label class=\"nombreCuenta\" style=\"display: none;\">"+c.getUser().getCorreo()+"</label>"
@@ -115,11 +133,6 @@
                                         + "</div>"
                                     + "</form>");
                         }
-                    }
-                    User user = (User)session.getAttribute("usuario");
-                    if (user == null || !user.getCorreo().equalsIgnoreCase("root")
-                            || !user.getContra().equalsIgnoreCase("root")) {
-                        response.sendRedirect("index2.jsp");
                     }
                 %> 
                 

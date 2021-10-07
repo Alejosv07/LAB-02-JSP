@@ -6,9 +6,13 @@
 package Controladores;
 
 import Clases.Cuenta;
+import Clases.Cuentabd;
 import Clases.User;
 import Clases.TipoDeInteres;
+import Clases.TipoDeInteresbd;
 import Clases.Transaccion;
+import Clases.Transaccionbd;
+import Clases.Userbd;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
@@ -67,26 +71,9 @@ public class CCuenta extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        
+        Cuentabd cbd = new Cuentabd();
         //Creamos una lista de cuentas y obtenemos una lista de cuentas
-        ArrayList<Cuenta>alCuenta = (ArrayList<Cuenta>) session.getAttribute("listaCuentaOriginal");
-        
-        //Si esta nula instanciamos una lista
-        if (alCuenta != null) {
-            String nombreBusqueda = (String) request.getParameter("txtBuscador").trim();
-            ArrayList<Cuenta>alCuentaTem = new ArrayList<>();
-            if (nombreBusqueda.length()<1) {
-                session.setAttribute("listaCuenta", alCuenta);
-                response.sendRedirect("Admi.jsp");
-            }else{
-                for (Cuenta cuenta : alCuenta) {
-                    if (cuenta.getNombre().toLowerCase().contains(nombreBusqueda.toLowerCase())) {
-                        alCuentaTem.add(cuenta);
-                    }
-                }
-                session.setAttribute("listaCuenta", alCuentaTem);
-            }
-        }
+        ArrayList<Cuenta>alCuenta = cbd.listaCuenta((String)request.getParameter("txtBuscador").trim());
         response.sendRedirect("Admi.jsp");
     }
 
@@ -102,73 +89,79 @@ public class CCuenta extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
+        
         String btnEliminar = request.getParameter("btnEliminar");
         String btnActualizar = request.getParameter("btnActualizar");
         String btnSalir = request.getParameter("btnSalir");
+        
+        
+        Cuentabd cbd = new Cuentabd();
+        Userbd usb = new Userbd();
+        Cuenta c = new Cuenta();
+        
+        
         if (btnEliminar != null) {
-            ArrayList<Cuenta>alCuenta = (ArrayList<Cuenta>) session.getAttribute("listaCuentaOriginal");
-            ArrayList<Cuenta>alCuentaInsertar = new ArrayList<>();
-            String nCuenta = request.getParameter("nCuenta");
-            for (Cuenta c : alCuenta) {
-                if (!c.getCuenta().equalsIgnoreCase(nCuenta)) {
-                    alCuentaInsertar.add(c);
-                }
+            c = (Cuenta)session.getAttribute("cuenta");
+            if (c != null) {
+                cbd.eliminarCuenta(c);
+                usb.eliminarUsuario(c.getUser());
             }
-            session.setAttribute("listaCuenta", alCuentaInsertar);
-            session.setAttribute("listaCuentaOriginal", alCuentaInsertar);
             response.sendRedirect("Admi.jsp");
         }else if(btnActualizar != null){
-            ArrayList<Cuenta>alCuenta = (ArrayList<Cuenta>) session.getAttribute("listaCuentaOriginal");
-            ArrayList<Cuenta>alCuentaInsertar = new ArrayList<>();
-            String nCuenta = request.getParameter("nCuenta");
-            for (Cuenta c : alCuenta) {
-                if (!c.getCuenta().equalsIgnoreCase(nCuenta)) {
-                    alCuentaInsertar.add(c);
-                }else{
-                    alCuentaInsertar.add(new Cuenta(request.getParameter("txtNombreA"), nCuenta,c.getSaldo(), c.getTipoDeInteres(), new User(0, request.getParameter("txtCorreoA"), request.getParameter("txtContraA"))));
-                }
+            c = (Cuenta)session.getAttribute("cuenta");
+            if (c != null) {
+                cbd.actualizarCuenta(c);
+                usb.actualizarUsuario(c.getUser());
             }
-            session.setAttribute("listaCuenta", alCuentaInsertar);
-            session.setAttribute("listaCuentaOriginal", alCuentaInsertar);
             response.sendRedirect("Admi.jsp");
         }else if(btnSalir != null){
-            session.removeAttribute("usuario");
+            session.removeAttribute("cuenta");
             response.sendRedirect("index2.jsp");
         }else{
-            Cuenta cuenta = new Cuenta();
-            Transaccion transaccion = new Transaccion();
-            ArrayList<Transaccion>alTransaccion = (ArrayList<Transaccion>) session.getAttribute("listaTransacciones");
-
-            if (alTransaccion==null) {
-                alTransaccion = new ArrayList<>();
-            }
+            User user = new User();
             
-            cuenta.setUser(new User(0, request.getParameter("txtCorreoN").trim(), request.getParameter("txtContraN").trim()));
-            cuenta.setCuenta(String.valueOf(request.getParameter("txtNCuentaN").trim()));
+            
+            user.setCorreo(request.getParameter("txtCorreoN").trim());
+            user.setContra(request.getParameter("txtContraN").trim());
+            
+            usb.agregarUsuario(user);
+            
+            user.setIdUser((int)session.getAttribute("idUser")+1);
+//            user.setIdUser(1);
+            
+            
+            TipoDeInteresbd tbd = new TipoDeInteresbd();
+            TipoDeInteres tp = new TipoDeInteres();
+            
+            tp.setNombreInteres("Interes simple");
+            tp.setTasaInteres(Double.parseDouble(request.getParameter("txtInteres")));
+            
+            tbd.agregarTipoDeInteres(tp);
+            
+            tp.setIdTipoDeInteres((int)session.getAttribute("idTipoDeInteres")+1);
+//            tp.setIdTipoDeInteres(1);
+            
+            Cuenta cuenta = new Cuenta();
+            
+//            cuenta.setIdCuenta(Integer.parseInt(request.getParameter("txtNCuentaN").trim()));
             cuenta.setNombre(request.getParameter("txtNombreN").trim());
+            cuenta.setUser(user);
             cuenta.setSaldo(Double.parseDouble(request.getParameter("txtSaldo").trim()));
-            cuenta.setTipoDeInteres(new TipoDeInteres(request.getParameter("optionInteres").trim(), 
-                    Double.parseDouble(request.getParameter("txtInteres").trim())));
+            cuenta.setTipoDeInteres(tp);
+            
+            cbd.agregarCuenta(cuenta);
+
+            cuenta.setIdCuenta((int)session.getAttribute("idCuenta"));
+//            cuenta.setIdCuenta(1);
+            
+            Transaccion transaccion = new Transaccion();
             transaccion.setCuenta(cuenta);
-                transaccion.setFecha(LocalDate.now());
-                transaccion.setHora(LocalTime.now());
-                transaccion.setMonto(cuenta.getSaldo());
-                transaccion.setObservacion("Capital inicial");
-                transaccion.setTipoTransaccion("Abono");
-                alTransaccion.add(transaccion);
-            //Creamos una lista de cuentas y obtenemos una lista de cuentas
-            ArrayList<Cuenta>alCuenta = (ArrayList<Cuenta>) session.getAttribute("listaCuentaOriginal");
-
-            //Si esta nula instanciamos una lista
-            if (alCuenta == null) {
-                alCuenta = new ArrayList<>();
-            }
-
-            //Agregamos la cuenta a la lista
-            alCuenta.add(cuenta);
-            session.setAttribute("listaTransacciones", alTransaccion);
-            session.setAttribute("listaCuenta", alCuenta);
-            session.setAttribute("listaCuentaOriginal", alCuenta);
+            transaccion.setTipoTransaccion("Abono");
+            transaccion.setMonto(cuenta.getSaldo());
+            transaccion.setObservacion("Capital inicial");
+            transaccion.setFecha(LocalDate.now().toString());
+            
+            new Transaccionbd().insertarTransaccion(transaccion);
             response.sendRedirect("Admi.jsp");
         }
     }

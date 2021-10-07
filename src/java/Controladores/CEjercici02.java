@@ -6,6 +6,7 @@
 package Controladores;
 
 import Clases.Cuenta;
+import Clases.Cuentabd;
 import Clases.User;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -62,7 +63,20 @@ public class CEjercici02 extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        //Obtenemos la sesion
+        HttpSession session = request.getSession();
+        
+        try{
+            Cuenta cuenta = (Cuenta) session.getAttribute("cuenta");
+
+            if(cuenta==null){
+                response.sendRedirect("index2.jsp");
+            }else {
+                response.sendRedirect("Cliente.jsp");
+            }
+        }catch(Exception ex){
+            response.sendRedirect("index2.jsp");
+        }
     }
 
     /**
@@ -76,36 +90,27 @@ public class CEjercici02 extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        User user = new User(0,request.getParameter("txtUsuario").trim(),request.getParameter("txtContra").trim());
-        
         //Obtenemos la sesion
         HttpSession session = request.getSession();
         
-        //Creamo una lista de cuentas
-        ArrayList<Cuenta> alCuenta = new ArrayList<>();
         
-        User user2 = (User) session.getAttribute("usuario");
-        //Obtenemos una lista de cuentas
-        alCuenta = (ArrayList<Cuenta>) session.getAttribute("listaCuentaOriginal");
-        if (user.getCorreo().equalsIgnoreCase("root") && user.getContra().equals("root")) {
-            session.setAttribute("usuario", user);
-            response.sendRedirect("Admi.jsp");
-        }else if(user2!=null){
-            response.sendRedirect("index2.jsp");
-            }else if (alCuenta != null && alCuenta.size()>0) {
-                boolean bandera = true;
-            for (Cuenta cuenta : alCuenta) {
-                if (user.getCorreo().equalsIgnoreCase(cuenta.getUser().getCorreo().trim())
-                        && user.getContra().equals(cuenta.getUser().getContra().trim())) {
-                    session.setAttribute("usuario", user);
-                    response.sendRedirect("Cliente.jsp");
-                    bandera=false;
-                }
-            }
-            if (bandera==true) {
+        User user = new User(0,request.getParameter("txtUsuario").trim(),request.getParameter("txtContra").trim());
+        Cuentabd cbd = new Cuentabd();
+        
+        Cuenta cuenta = cbd.consultarCuenta(user);
+        try{
+
+            if (user.getCorreo().equalsIgnoreCase("root") && user.getContra().equals("root")) {
+                session.setAttribute("usuario", user);
+                response.sendRedirect("Admi.jsp");
+            }else
+            if(cuenta==null){
+                session.setAttribute("cuenta", cuenta);
                 response.sendRedirect("index2.jsp");
+            }else {
+                response.sendRedirect("Cliente.jsp");
             }
-        }else{
+        }catch(Exception ex){
             response.sendRedirect("index2.jsp");
         }
     }

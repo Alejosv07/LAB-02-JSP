@@ -12,20 +12,36 @@ import java.util.ArrayList;
  * @author Urban
  */
 public class Cuenta {
+    private int idCuenta;
     private User user;
     private String nombre;
-    private String cuenta;
     private double saldo;
     private TipoDeInteres tipoDeInteres;
     
     public Cuenta() {
     }
-    
-    public Cuenta(String nombre, String cuenta, double saldo, TipoDeInteres tipoDeInteres, User user) {
+
+    public Cuenta(int idCuenta, User user, String nombre, String cuenta, double saldo, TipoDeInteres tipoDeInteres) {
+        this.idCuenta = idCuenta;
+        this.user = user;
         this.nombre = nombre;
-        this.cuenta = cuenta;
         this.saldo = saldo;
         this.tipoDeInteres = tipoDeInteres;
+    }
+
+    public int getIdCuenta() {
+        return idCuenta;
+    }
+
+    public void setIdCuenta(int idCuenta) {
+        this.idCuenta = idCuenta;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
         this.user = user;
     }
 
@@ -37,67 +53,12 @@ public class Cuenta {
         this.nombre = nombre;
     }
 
-    public String getCuenta() {
-        return cuenta;
+    public double getSaldo() {
+        return saldo;
     }
 
-    public void setCuenta(String cuenta) {
-        this.cuenta = cuenta;
-    }
-
-    public ConsultaSaldos estadoCuenta() {
-        ConsultaSaldos consultaSaldos = new ConsultaSaldos();
-        
-        consultaSaldos.setNombre(this.nombre);
-        consultaSaldos.setSaldo(this.saldo);
-        consultaSaldos.setnCuenta(this.cuenta);
-        
-        return consultaSaldos;
-    }
-    
-    public MostarTransaciones depositos(ArrayList<Transaccion> alTransaccion) {
-        MostarTransaciones mostarTransaciones = new MostarTransaciones();
-        mostarTransaciones.setNombre(this.nombre);
-        mostarTransaciones.setNuevoSaldo(this.saldo);
-        mostarTransaciones.setnCuenta(this.cuenta);
-        
-        if (alTransaccion.size()==1) {
-            mostarTransaciones.setSaldoAnterior(0);
-        }
-        ArrayList<Transaccion> alTransaccion2 = new ArrayList<>();
-        if (alTransaccion.size()>1) {
-            for (Transaccion t : alTransaccion) {
-                if (t.getCuenta().cuenta.trim().equalsIgnoreCase(this.cuenta)) {
-                    alTransaccion2.add(t);
-                }
-            }
-            
-            mostarTransaciones.setSaldoAnterior(alTransaccion2.get(alTransaccion2.size()-1).getMonto());
-        }
-        
-        return mostarTransaciones;
-    }
-    
-    public MostarTransaciones retiros(ArrayList<Transaccion> alTransaccion) {
-        MostarTransaciones mostarTransaciones = new MostarTransaciones();
-        mostarTransaciones.setNombre(this.nombre);
-        mostarTransaciones.setNuevoSaldo(this.saldo);
-        
-        if (alTransaccion.size()==1) {
-            mostarTransaciones.setSaldoAnterior(0);
-        }
-        ArrayList<Transaccion> alTransaccion2 = new ArrayList<>();
-        if (alTransaccion.size()>1) {
-            for (Transaccion t : alTransaccion) {
-                if (t.getCuenta().cuenta.trim().equalsIgnoreCase(this.cuenta)) {
-                    alTransaccion2.add(t);
-                }
-            }
-            
-            mostarTransaciones.setSaldoAnterior(alTransaccion2.get(alTransaccion2.size()-1).getMonto());
-        }
-        
-        return mostarTransaciones;
+    public void setSaldo(double saldo) {
+        this.saldo = saldo;
     }
 
     public TipoDeInteres getTipoDeInteres() {
@@ -108,23 +69,16 @@ public class Cuenta {
         this.tipoDeInteres = tipoDeInteres;
     }
     
-    public double interesGanado(int nAnos) {
-        return this.saldo*this.tipoDeInteres.getTasaInteres()*nAnos;
+    public void estadoCuenta() {
     }
     
-    public double getSaldo() {
-        return saldo;
+    public void depositos() {
+    }
+    
+    public void retiros() {
     }
 
-    public void setSaldo(double saldo) {
-        this.saldo = saldo;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
+    public double interesGanado(int nAnos) {
+        return this.saldo*this.tipoDeInteres.getTasaInteres()*nAnos;
     }
 }

@@ -1,0 +1,45 @@
+* {
+    box-sizing: border-box;
+}
+form{
+    width: 100%;
+    width: 40%;
+}
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.svgAuth {
+    margin-bottom: 0.5em;
+    width: 30%;
+    height: 50%;
+}
+
+.btn {
+    padding: 0.5em;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    -ms-border-radius: 8px;
+    -o-border-radius: 8px;
+}
+
+.btn:active {
+    transform: scale(0.9);
+    -webkit-transform: scale(0.9);
+    -moz-transform: scale(0.9);
+    -ms-transform: scale(0.9);
+    -o-transform: scale(0.9);
+}
+
+.btn--aceptar {
+    width: 100%;
+    color: white;
+    background-color: #FF6363;
+}

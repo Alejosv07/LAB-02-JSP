@@ -83,50 +83,28 @@ public class CTransaccion extends HttpServlet {
         String btnRetirar = request.getParameter("btnRetirar");
         String btnAbonar2 = request.getParameter("btnAbonar2");
         String btnRetirar2 = request.getParameter("btnRetirar2");
-        
-        ArrayList<Transaccion>alTransaccion = (ArrayList<Transaccion>) session.getAttribute("listaTransacciones");
-        ArrayList<Cuenta>alCuenta = (ArrayList<Cuenta>) session.getAttribute("listaCuentaOriginal");
-        ArrayList<Cuenta>alCuentaInsertar = new ArrayList<>();
-        String nCuenta = request.getParameter("nCuenta");
-        
-        if (alTransaccion==null) {
-            alTransaccion = new ArrayList<>();
-        }
-        //Obtenemos los datos y los hacemos objeto de tipo transaccion
-        Transaccion transaccion = new Transaccion();
-        double monto = Double.parseDouble(request.getParameter("txtMonto"));
-        for (Cuenta c : alCuenta) {
-            if (c.getCuenta().equalsIgnoreCase(nCuenta)) {
-                transaccion.setCuenta(c);
-                transaccion.setFecha(LocalDate.now());
-                transaccion.setHora(LocalTime.now());
-                transaccion.setMonto(monto);
-                double resultado = 0;
-                transaccion.setObservacion(request.getParameter("txtObservacion"));
-                if (btnAbonar != null || btnAbonar2 != null) {
-                    transaccion.setTipoTransaccion("Abono");
-                    resultado = c.getSaldo()+monto;
-                }else if(btnRetirar != null || btnRetirar2 != null){
-                    resultado = c.getSaldo()-monto;
-                    transaccion.setTipoTransaccion("Retiro");
-                }
-                if (resultado>0) {
-                    alTransaccion.add(transaccion);
-                    alCuentaInsertar.add(new Cuenta(c.getNombre(), nCuenta, resultado, c.getTipoDeInteres(), c.getUser()));
-                }else{
-                    alCuentaInsertar.add(c);
-                }
-            }else{
-                alCuentaInsertar.add(c);
+        try{
+            Cuenta cuenta = (Cuenta) session.getAttribute("cuenta");
+
+            //Obtenemos los datos y los hacemos objeto de tipo transaccion
+            Transaccion transaccion = new Transaccion();
+            double monto = Double.parseDouble(request.getParameter("txtMonto"));
+            transaccion.setCuenta(cuenta);
+            transaccion.setFecha(LocalDate.now().toString());
+            transaccion.setMonto(monto);
+            transaccion.setObservacion(request.getParameter("txtObservacion"));
+            if (btnAbonar != null || btnAbonar2 != null) {
+                transaccion.setTipoTransaccion("Abono");
+            }else if(btnRetirar != null || btnRetirar2 != null){
+                transaccion.setTipoTransaccion("Retiro");
             }
-            session.setAttribute("listaTransacciones", alTransaccion);
-            session.setAttribute("listaCuenta", alCuentaInsertar);
-            session.setAttribute("listaCuentaOriginal", alCuentaInsertar);
-        }
-        if (btnRetirar != null || btnAbonar != null) {
-            response.sendRedirect("Admi.jsp");
-        }else{
-            response.sendRedirect("Cliente.jsp");
+            if (btnRetirar != null || btnAbonar != null) {
+                response.sendRedirect("Admi.jsp");
+            }else{
+                response.sendRedirect("Cliente.jsp");
+            }
+        }catch(Exception ex){
+            System.out.println(ex);
         }
     }
 

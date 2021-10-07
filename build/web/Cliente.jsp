@@ -4,7 +4,7 @@
     Author     : Urban
 --%>
 
-<%@page import="Clases.MostarTransaciones"%>
+<%@page import="Clases.Transaccionbd"%>
 <%@page import="java.util.Map.Entry"%>
 <%@page import="Clases.Transaccion"%>
 <%@page import="Clases.Cuenta"%>
@@ -30,19 +30,17 @@
             <ul class="ul">
                 <li class="item">
                     <%
-                        User user = (User)session.getAttribute("usuario");
-                        
-                        ArrayList<Cuenta> alCuenta = (ArrayList<Cuenta>) session.getAttribute("listaCuentaOriginal");
-                        
-                        if (alCuenta == null || alCuenta.size()==0 || user == null) {
-                            response.sendRedirect("index2.jsp");
-                        }else{
-                            for (Cuenta c : alCuenta) {
-                                if (c.getUser().getCorreo().equalsIgnoreCase(user.getCorreo())) {
-                                    out.print(c.getNombre());
-                                    session.setAttribute("cuenta", c);
-                                }
+                        Cuenta cuenta = new Cuenta();
+                        try{
+                            if ((Cuenta)session.getAttribute("cuenta") != null) {
+                                cuenta = (Cuenta)session.getAttribute("cuenta");
+                                out.print(cuenta.getNombre());
+                            }else{
+                                out.print("Error");
+//                                response.sendRedirect("index2.jsp");
                             }
+                        }catch(Exception ex){
+                            System.out.println(ex);
                         }
                     %></li>
                 <li class="item">
@@ -70,21 +68,16 @@
                         <button type="submit" class="boton boton--verde">Calcular</button>
                     </form>
                     <label>Interes: <%
-                        Cuenta c = new Cuenta();
                         try{
-                            c = (Cuenta) session.getAttribute("cuenta");
-                            if (c==null || session.getAttribute("cuenta") == null) {
-                                response.sendRedirect("index2.jsp");
-                            }
-                            out.print(c.getTipoDeInteres().getTasaInteres());
+                            out.print(cuenta.getTipoDeInteres().getTasaInteres());
                         }catch(Exception ex){
-
+                            System.out.println();
                         }
                     %></label>
                     <label>Capital: <%
                         try
                         {
-                            out.print(c.getSaldo());
+                            out.print(cuenta.getSaldo());
                         }catch(Exception ex){
                         }
                         %></label>
@@ -104,7 +97,7 @@
                     <label>Interes ganado: <%
                         
                         if (anos>0) {
-                            out.print(c.interesGanado(anos));
+                            out.print(cuenta.interesGanado(anos));
                         }else{
                             out.print(0);
                         }
@@ -116,16 +109,16 @@
                     <h5 class="sectionCuenta__title">Consulta de saldos</h5>
                     <label>Nombre: <%
                         try{
-                            out.print(c.estadoCuenta().getNombre()); 
+                            out.print(cuenta.getNombre()); 
                         }catch(Exception ex){
                         }
                     %></label>
                     <label>N.Cuenta: <% try{
-                            out.print(c.estadoCuenta().getnCuenta());
+                            out.print(cuenta.getIdCuenta());
                         }catch(Exception ex){
                         } %></label>
                     <label>Saldo: <%try{
-                            out.print(c.estadoCuenta().getSaldo());    
+                            out.print(cuenta.getSaldo());    
                         }catch(Exception ex){
                             }%></label>
                 </section>
@@ -139,7 +132,7 @@
 
                 <!-- Formulario para hacer Transacción -->
                 <form action="CTransaccion" method="post" class="card__transaccion2">
-                    <% out.print("<input name =\"nCuenta\" class=\"nCuenta\" value=\""+c.getCuenta()+"\" readonly style=\"border: none; outline: none;\"></input>"); %>
+                    <% out.print("<input name =\"nCuenta\" class=\"nCuenta\" value=\""+cuenta.getIdCuenta()+"\" readonly style=\"border: none; outline: none;\"></input>"); %>
                     <input type="number" name="txtMonto" step="0.01" class="inputText" required min="0.01" placeholder="Monto">
                     <input type="text" class="inputText" placeholder="Observación" name="txtObservacion" required>
                     <button type="submit" class="boton boton--abonar" name="btnAbonar2">Abonar</button>
@@ -148,7 +141,8 @@
                 <!-- seccion de las cartas listas -->
                 <div class="cards">
                     <%
-                        ArrayList<Transaccion> alTransaccion = (ArrayList<Transaccion>)session.getAttribute("listaTransacciones");
+                        Transaccionbd tbd = new Transaccionbd();
+                        ArrayList<Transaccion> alTransaccion = tbd.listarTransaccion(cuenta);
 //                        MostarTransaciones mt = c.depositos(alTransaccion);
 //                        out.print("<div class=\"card\">"
 //                                                 +"<label>"+mt.getNombre()+"</label>"
@@ -158,17 +152,15 @@
                         if (alTransaccion != null) {
                             int i = 1;
                             for (Transaccion t : alTransaccion) {
-                                if (t.getCuenta().getCuenta().trim().equalsIgnoreCase(c.getCuenta().trim())) {
-                                    out.print("<div class=\"card\">"
-                                                + "<label>"+i+"</label>"
-                                                + "<label>Tipo de Transacción: "+t.getTipoTransaccion()+"</label>"
-                                                 +"<label>Monto: "+t.getMonto()+"</label>"
-                                                 +"<label>Observaciones: "+t.getObservacion()+"</label>"
-                                                 +"<label>Fecha: "+t.getFecha().toString()+"</label>"
-                                                 +"<label>Hora: "+t.getHora().toString()+"</label>"
-                                            + "</div>");
-                                    i++;
-                                }
+                                out.print("<div class=\"card\">"
+                                            + "<label>"+i+"</label>"
+                                            + "<label>Tipo de Transacción: "+t.getTipoTransaccion()+"</label>"
+                                             +"<label>Monto: "+t.getMonto()+"</label>"
+                                             +"<label>Observaciones: "+t.getObservacion()+"</label>"
+                                             +"<label>Fecha: "+t.getFecha().toString()+"</label>"
+                                             +"<label>Hora: "+t.getHora().toString()+"</label>"
+                                        + "</div>");
+                                i++;
                             }
                         }
                     %>

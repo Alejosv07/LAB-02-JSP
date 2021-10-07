@@ -5,31 +5,38 @@
  */
 package Clases;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-
 /**
  *
  * @author Urban
  */
 public class Transaccion {
+    private int idTransaccion;
     private Cuenta cuenta;
     private String tipoTransaccion;
     private double monto;
     private String observacion;
-    private LocalDate fecha;
-    private LocalTime hora;
+    private String fecha;
+    private String hora;
     
     public Transaccion() {
     }
 
-    public Transaccion(Cuenta cuenta, String tipoTransaccion, double monto, String observacion, LocalDate fecha, LocalTime hora) {
+    public Transaccion(int idTransaccion, Cuenta cuenta, String tipoTransaccion, double monto, String observacion, String fecha, String hora) {
+        this.idTransaccion = idTransaccion;
         this.cuenta = cuenta;
         this.tipoTransaccion = tipoTransaccion;
         this.monto = monto;
         this.observacion = observacion;
         this.fecha = fecha;
         this.hora = hora;
+    }
+
+    public int getIdTransaccion() {
+        return idTransaccion;
+    }
+
+    public void setIdTransaccion(int idTransaccion) {
+        this.idTransaccion = idTransaccion;
     }
 
     public Cuenta getCuenta() {
@@ -64,19 +71,19 @@ public class Transaccion {
         this.observacion = observacion;
     }
 
-    public LocalDate getFecha() {
+    public String getFecha() {
         return fecha;
     }
 
-    public void setFecha(LocalDate fecha) {
+    public void setFecha(String fecha) {
         this.fecha = fecha;
     }
 
-    public LocalTime getHora() {
+    public String getHora() {
         return hora;
     }
 
-    public void setHora(LocalTime hora) {
+    public void setHora(String hora) {
         this.hora = hora;
     }
 }
